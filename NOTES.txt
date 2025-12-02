@@ -1,0 +1,9 @@
+🧠 How It Works
+
+1. The frontend (src/app/page.tsx) collects user messages.
+
+2. It sends the full conversation (including a system prompt) to /api/ai.
+
+3. The API route (src/app/api/ai/route.ts) calls OpenAI and returns the assistant's reply.
+
+4. Messages are stored in local state on the client.
