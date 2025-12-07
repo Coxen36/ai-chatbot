@@ -17,7 +17,7 @@ export default function Home() {
 
     const newMessages: ChatMessage[] = [
       ...messages,
-      { role: "user", content: input },
+      { role: "user", content: "The movie is Stranger Things, made in 2016." },
     ];
 
     setMessages(newMessages);
@@ -25,26 +25,44 @@ export default function Home() {
     setLoading(true);
 
     // Build full conversation with system prompt
+    // const apiMessages = [
+    //   {
+    //     role: "system" as const,
+    //     content:
+    //       "You are a friendly AI assistant helping a developer learn AI and startups.",
+    //   },
+    //   ...newMessages,
+    // ];
+
+    // const res = await fetch("/api/ai", {
+    //   method: "POST",
+    //   body: JSON.stringify({ messages: apiMessages }),
+    // });
+
+    // const data = await res.json();
+
+    // setMessages((prev) => [
+    //   ...prev,
+    //   { role: "assistant", content: data.reply as string },
+    // ]);
+
     const apiMessages = [
       {
-        role: "system" as const,
+        role: "system",
         content:
-          "You are a friendly AI assistant helping a developer learn AI and startups.",
+          "Return ONLY a JSON object describing a movie. Schema: {title:string, year:number, genres:string[], rating:number, actors:string[]}",
       },
       ...newMessages,
     ];
 
-    const res = await fetch("/api/ai", {
+    const res = await fetch("/api", {
       method: "POST",
       body: JSON.stringify({ messages: apiMessages }),
     });
 
     const data = await res.json();
 
-    setMessages((prev) => [
-      ...prev,
-      { role: "assistant", content: data.reply as string },
-    ]);
+    console.log("Exercise 1 output:", data.reply as string);
 
     setLoading(false);
   };
